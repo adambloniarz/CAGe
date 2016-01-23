@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <tclap/CmdLine.h>
 #include "api/BamReader.h"
 
 using namespace std;
@@ -20,39 +21,51 @@ using namespace BamTools;
 
 string get_cigar(vector<CigarOp> cig_ops) {
 
-    string cigar;
+  string cigar;
 
-    for (auto cig_op : cig_ops) {
-        cigar += to_string(cig_op.Length);
-        cigar += cig_op.Type;
-    }
-    return cigar;
+  for (auto cig_op : cig_ops) {
+    cigar += to_string(cig_op.Length);
+    cigar += cig_op.Type;
+  }
+  return cigar;
 }
 
-int main( int argc, char *argv[] ) {
+int main(int argc, char** argv) {
 
+  /* Command line arguments:
+   *  1) Bamfile
+   *  2) Contig
+   *  3) Start
+   *  4) End
+   */
 
-    /* Command line arguments:
-     *  1) Bamfile
-     *  2) Contig
-     *  3) Start
-     *  4) End
-     */
-    
-    BamReader reader;
-    string bamfile = argv[1];
-    reader.Open(bamfile);
-    reader.OpenIndex(bamfile + ".bai");
-    int refID = reader.GetReferenceID( argv[2] );
-    reader.SetRegion( refID, atoi(argv[3]), refID, atoi(argv[4]) );
+  TCLAP::CmdLine cmd("Bamdump - dump the contents of a bam file to stdout, to be piped to CAGe");
 
-    BamAlignment al;
+  TCLAP::UnlabeledValueArg<string> bamfile_arg("bamfile", "bam file", true, "", "bamfile", cmd);
+  TCLAP::UnlabeledValueArg<string> contig_arg("contig", "contig name", true, "", "contig", cmd);
+  TCLAP::UnlabeledValueArg<int> start_arg("start", "start position", true, 0, "start", cmd);
+  TCLAP::UnlabeledValueArg<int> end_arg("end", "end position", true, 0, "end", cmd);
+  cmd.parse(argc, argv);
 
-    while ( reader.GetNextAlignment(al) ) {
-        printf("%i %s %s %s %i %i\n", al.Position, al.QueryBases.c_str(), get_cigar(al.CigarData).c_str(), al.Qualities.c_str(), al.MapQuality, al.IsReverseStrand() ? 1 : 0);
-    }
+  BamReader reader;
+  string bamfile = bamfile_arg.getValue();
+  reader.Open(bamfile);
+  reader.OpenIndex(bamfile + ".bai");
 
-    reader.Close();
+  string contig = contig_arg.getValue();
+  int refID = reader.GetReferenceID(contig);
 
-    return 0;
+  int start = start_arg.getValue();
+  int end = end_arg.getValue();
+
+  reader.SetRegion(refID, start, refID, end);
+
+  BamAlignment al;
+
+  while (reader.GetNextAlignment(al)) {
+    printf("%i %s %s %s %i %i\n", al.Position, al.QueryBases.c_str(), get_cigar(al.CigarData).c_str(), al.Qualities.c_str(), al.MapQuality, al.IsReverseStrand() ? 1 : 0);
+  }
+
+  reader.Close();
+  return 0;
 }

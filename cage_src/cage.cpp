@@ -36,15 +36,15 @@ CageParams parse_parameters(int argc, char** argv) {
   try {
     TCLAP::CmdLine cmd("CAGe - Changepoint detection for efficient variant calling", ' ', "0.1");
 
-    TCLAP::UnlabeledValueArg<string> contig_arg("contig", "contig name", true, "", "string", cmd);
-    TCLAP::UnlabeledValueArg<int> start_arg("start", "start position", true, 0, "integer", cmd);
-    TCLAP::UnlabeledValueArg<int> end_arg("end", "end position", true, 0, "integer", cmd);
-    TCLAP::UnlabeledValueArg<int> step_arg("step", "step size", true, 200, "integer", cmd);
-    TCLAP::UnlabeledValueArg<double> beta_arg("beta", "beta parameter for PELT", true, 0, "number", cmd);
-    TCLAP::UnlabeledValueArg<string> output_file_arg("output_file", "File to output the changepoints determined by CAGe", true, "", "filename", cmd);
+    TCLAP::UnlabeledValueArg<string> contig_arg("contig", "contig name", true, "", "contig", cmd);
+    TCLAP::UnlabeledValueArg<int> start_arg("start", "start position", true, 0, "start", cmd);
+    TCLAP::UnlabeledValueArg<int> end_arg("end", "end position", true, 0, "end", cmd);
+    TCLAP::UnlabeledValueArg<int> step_arg("step", "step size", true, 200, "stepsize", cmd);
+    TCLAP::UnlabeledValueArg<double> beta_arg("beta", "beta parameter for PELT", true, 0, "beta", cmd);
+    TCLAP::UnlabeledValueArg<string> output_file_arg("output_file", "File to output the changepoints determined by CAGe", true, "", "cage_output_file", cmd);
     TCLAP::SwitchArg verbose_switch_arg("v", "verbose", "print verbose output of CAGe", cmd, false);
-    TCLAP::ValueArg<string> output_VCF_arg("o", "output_vcf", "File to output variants called when running CAGe", true, "CAGe++.vcf", "filename");
-    TCLAP::ValueArg<string> input_SNP_db_arg("s", "input_SNP_db", "Filename of sqlite3 SNP database", true, "", "filename");
+    TCLAP::ValueArg<string> output_VCF_arg("o", "output_vcf", "File to output variants called when running CAGe", true, "CAGe++.vcf", "VCF_output_file");
+    TCLAP::ValueArg<string> input_SNP_db_arg("s", "input_SNP_db", "Filename of sqlite3 SNP database", true, "", "SNP_input_db");
     cmd.xorAdd(output_VCF_arg, input_SNP_db_arg);
 
     cmd.parse(argc, argv);
