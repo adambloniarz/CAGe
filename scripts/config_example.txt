@@ -1,0 +1,23 @@
+# Example params file for classify.py
+# Note: these values are appropriate for na12878 chr20
+
+[cutoffs]
+# Note: 'coverage rate' refers to the expected number of reads starting at each location in the genome
+# Coverage rate minimum - rates lower than this are classified as high complexity
+cov_min = 0.30
+
+# Coverage rate maximum - rates higher than this are classified as high complexity
+cov_max = 0.80
+
+# Note: 'sequencer error rate' refers to the probability that the sequencer makes an error
+# Sequencer error rate maximum - rates higher than this are classified as high complexity
+err_max = 0.01
+
+# SNP rate maximum - rates higher than this are classified as high complexity
+mut_max = 0.02
+
+# Indel rate maximum - rates higher than this are classified as high complexity
+indel_max = 0.001
+
+# Zero map-quality read rate maximum - rates higher than this are classified as high complexity
+zeta_max = 0.05
