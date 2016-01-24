@@ -1,4 +1,4 @@
-export CC = clang++
+export CC = g++
 export BAMTOOLS_PATH = <SET PATH TO BAMTOOLS>
 
 all:
