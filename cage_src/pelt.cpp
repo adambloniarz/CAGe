@@ -241,6 +241,9 @@ namespace cage {
     FILE *f_out;
     if (strcmp(output_file.c_str(), "") != 0) { 
       f_out = fopen(output_file.c_str(), "w");
+      if (f_out == nullptr) {
+        throw runtime_error("Could not open file " + output_file); 
+      }
       for (row = 0; row < (int)cps_n.size() - 2; row++) {
         if ((lengths[row] != 0)) { 
           fprintf(f_out, "%i\t%i\t%0.8f\t%0.8f\t%0.8f\t%0.8f\t%0.8f\n", cps_n[row], 

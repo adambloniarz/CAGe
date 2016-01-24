@@ -91,7 +91,7 @@ double wall_time ()
 int main(int argc, char** argv) {
 
   // To speed up calls to getline
-  cin.sync_with_stdio(false);
+  ios_base::sync_with_stdio(false);
 
   try {
     // Parse command line parameters

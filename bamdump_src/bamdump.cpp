@@ -39,6 +39,7 @@ int main(int argc, char** argv) {
    *  4) End
    */
 
+  try {
   TCLAP::CmdLine cmd("Bamdump - dump the contents of a bam file to stdout, to be piped to CAGe");
 
   TCLAP::UnlabeledValueArg<string> bamfile_arg("bamfile", "bam file", true, "", "bamfile", cmd);
@@ -49,8 +50,12 @@ int main(int argc, char** argv) {
 
   BamReader reader;
   string bamfile = bamfile_arg.getValue();
-  reader.Open(bamfile);
-  reader.OpenIndex(bamfile + ".bai");
+  if (!reader.Open(bamfile)) {
+    throw runtime_error(string("Unable to open bam file ") + bamfile);
+  }
+  if (!reader.OpenIndex(bamfile + ".bai")) {
+    throw runtime_error(string("Unable to open bam file ") + bamfile + ".bai");
+  }
 
   string contig = contig_arg.getValue();
   int refID = reader.GetReferenceID(contig);
@@ -67,5 +72,9 @@ int main(int argc, char** argv) {
   }
 
   reader.Close();
+  } catch (exception& e) {
+    cerr << e.what() << endl;
+    return 1;
+  }
   return 0;
 }

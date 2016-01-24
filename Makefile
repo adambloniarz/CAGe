@@ -1,5 +1,5 @@
-export CC = g++
-export BAMTOOLS_PATH = <PATH TO BAMTOOLS>
+export CC = clang++
+export BAMTOOLS_PATH = <SET PATH TO BAMTOOLS>
 
 all:
 	$(MAKE) -C cage_src
