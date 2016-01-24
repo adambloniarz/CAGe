@@ -47,5 +47,6 @@ The flag `-v` tells CAGe to print verbose output while running. This is recommen
 ####Citation for CAGe:
 Bloniarz, A., Talwalkar, A., Terhorst, J., Jordan, M. I., Patterson, D., Yu, B., & Song, Y. S. (2014, January). Changepoint Analysis for Efficient Variant Calling. In *Research in Computational Molecular Biology* (pp. 20-34). Springer International Publishing.
 
-CAGe implements the change-point detection algorithm introduced in;
+CAGe implements the change-point detection algorithm introduced in:
+
 Killick, R., Fearnhead, P., & Eckley, I. A. (2012). Optimal detection of changepoints with a linear computational cost. *Journal of the American Statistical Association*, 107(500), 1590-1598.
