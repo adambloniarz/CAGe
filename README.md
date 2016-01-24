@@ -10,7 +10,7 @@
 1. Edit the first two lines in the `Makefile`.
   1. Change the C++ compiler, if necessary (g++ by default).
   2. Provide path to the bamtools top-level directory (this should have `include` and `lib` as subdirectories). Include the final `/`.
-2. Run `make`.
+2. Run `make`. This will place compiled binaries in the directory `bin`.
 
 ##Usage
 The basic CAGe pipeline consists of the following steps:
