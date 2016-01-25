@@ -6,7 +6,7 @@
 * C++ compiler with support for C++11.
 * Bamtools library.  If not already installed, follow directions [here](https://github.com/pezmaster31/bamtools/wiki).
 
-####CAGe Installation Steps
+####Installation Steps
 1. Edit the first two lines in the `Makefile`.
   1. Change the C++ compiler, if necessary (g++ by default).
   2. Provide path to the bamtools top-level directory (this should have `include` and `lib` as subdirectories). Include the final `/`.
@@ -18,12 +18,12 @@ The basic CAGe pipeline consists of the following steps:
 1. Dump the reference to stdout.
 2. Dump the reads to stdout (using `bin/bamdump`).
 3. Run changepoint detection to segment the genome (using `bin/cage` with piped stdin from steps 1 and 2).
-4. Classify regions as high-complexity or low-complexity based on the inferred parameters of the regions (using `scripts/classify.py`), resulting in two `.bed` files.
+4. Classify segments as high-complexity or low-complexity based on the inferred parameters of the segment (using `scripts/classify.py`), resulting in two `.bed` files.
 
 These steps can be run with `scripts/run_cage.sh`. Edit the variable definitions at the top of that file to provide your inputs. 
 
 In step 1, the reference must be provided such that the nth byte corresponds exactly to the nth base. To create such a file from a fasta file, use `scripts/dump_reference.sh`.
-In step 3, `scripts/classify.py` classifies regions using simple thresholds, which must be provided in a parameter file. An example, appropriate for na12878, is provided in `scripts/config_example.txt`. It is important to set the coverage and error rate thresholds to match the statistics of the sample.
+In step 4, `scripts/classify.py` classifies regions using simple thresholds, which must be provided in a parameter file. An example, appropriate for na12878, is provided in `scripts/config_example.txt`. It is important to set the coverage and error rate thresholds to match the statistics of the sample.
 
 ##Notes
 The changepoint detection in CAGe depends on a rough estimate of SNPs and indels in the sample. These can either be provided to CAGe through an sqlite3 database, or CAGe can call variants internally using a simple built-in variant caller (referred to as CAGe++ in the paper)
