@@ -40,38 +40,38 @@ int main(int argc, char** argv) {
    */
 
   try {
-  TCLAP::CmdLine cmd("Bamdump - dump the contents of a bam file to stdout, to be piped to CAGe");
+    TCLAP::CmdLine cmd("Bamdump - dump the contents of a bam file to stdout, to be piped to CAGe");
 
-  TCLAP::UnlabeledValueArg<string> bamfile_arg("bamfile", "bam file", true, "", "bamfile", cmd);
-  TCLAP::UnlabeledValueArg<string> contig_arg("contig", "contig name", true, "", "contig", cmd);
-  TCLAP::UnlabeledValueArg<int> start_arg("start", "start position", true, 0, "start", cmd);
-  TCLAP::UnlabeledValueArg<int> end_arg("end", "end position", true, 0, "end", cmd);
-  cmd.parse(argc, argv);
+    TCLAP::UnlabeledValueArg<string> bamfile_arg("bamfile", "bam file", true, "", "bamfile", cmd);
+    TCLAP::UnlabeledValueArg<string> contig_arg("contig", "contig name", true, "", "contig", cmd);
+    TCLAP::UnlabeledValueArg<int> start_arg("start", "start position", true, 0, "start", cmd);
+    TCLAP::UnlabeledValueArg<int> end_arg("end", "end position", true, 0, "end", cmd);
+    cmd.parse(argc, argv);
 
-  BamReader reader;
-  string bamfile = bamfile_arg.getValue();
-  if (!reader.Open(bamfile)) {
-    throw runtime_error(string("Unable to open bam file ") + bamfile);
-  }
-  if (!reader.OpenIndex(bamfile + ".bai")) {
-    throw runtime_error(string("Unable to open bam file ") + bamfile + ".bai");
-  }
+    BamReader reader;
+    string bamfile = bamfile_arg.getValue();
+    if (!reader.Open(bamfile)) {
+      throw runtime_error(string("Unable to open bam file ") + bamfile);
+    }
+    if (!reader.OpenIndex(bamfile + ".bai")) {
+      throw runtime_error(string("Unable to open bam file ") + bamfile + ".bai");
+    }
 
-  string contig = contig_arg.getValue();
-  int refID = reader.GetReferenceID(contig);
+    string contig = contig_arg.getValue();
+    int refID = reader.GetReferenceID(contig);
 
-  int start = start_arg.getValue();
-  int end = end_arg.getValue();
+    int start = start_arg.getValue();
+    int end = end_arg.getValue();
 
-  reader.SetRegion(refID, start, refID, end);
+    reader.SetRegion(refID, start, refID, end);
 
-  BamAlignment al;
+    BamAlignment al;
 
-  while (reader.GetNextAlignment(al)) {
-    printf("%i %s %s %s %i %i\n", al.Position, al.QueryBases.c_str(), get_cigar(al.CigarData).c_str(), al.Qualities.c_str(), al.MapQuality, al.IsReverseStrand() ? 1 : 0);
-  }
+    while (reader.GetNextAlignment(al)) {
+      printf("%i %s %s %s %i %i\n", al.Position, al.QueryBases.c_str(), get_cigar(al.CigarData).c_str(), al.Qualities.c_str(), al.MapQuality, al.IsReverseStrand() ? 1 : 0);
+    }
 
-  reader.Close();
+    reader.Close();
   } catch (exception& e) {
     cerr << e.what() << endl;
     return 1;
