@@ -1,7 +1,12 @@
 #CAGe
-####Changepoint Analysis for Efficient Variant Calling
+##Changepoint Analysis for Efficient Variant Calling
 
 ##Installation
+###Installation via bioconda
+Execute the command:
+`conda install -c bioconda cage`
+to use [this](https://github.com/bioconda/bioconda-recipes/tree/master/recipes/cage) bioconda recipe.
+###Manual installation
 ####Prerequisites
 * C++ compiler with support for C++11.
 * Bamtools library.  If not already installed, follow directions [here](https://github.com/pezmaster31/bamtools/wiki).
