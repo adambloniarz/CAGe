@@ -1,5 +1,4 @@
-#CAGe
-##Changepoint Analysis for Efficient Variant Calling
+#CAGe: Changepoint Analysis for Efficient Variant Calling
 
 ##Installation
 ###Installation via bioconda
