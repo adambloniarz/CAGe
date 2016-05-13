@@ -113,7 +113,6 @@ namespace cage {
             case ('='):
             case ('X'):
               for (int l = 0; l < op.Length; l++) {
-		if (al.Qualities.size() > (unsigned)k) {
                   if (al.MapQuality != 0 && al.Qualities.at(k) > '%' && j + pos_rel >= 0 && j + pos_rel < (int)(block_end - block_start)) {
                     // Only count up mismatches; do not consider variants in soft-clipped region
                     piles_seg.depth[j + pos_rel]++;
@@ -125,15 +124,14 @@ namespace cage {
                       }
                     }
                   }
-		}
                 j++; k++;
               }
               break;
 
             case ('H'): // Hard-clipping
+              break; // Ignore these bases (not present in the query string)
             case ('S'): // Soft-clipping
               for (int l = 0; l < op.Length; l++) {
-		if (al.Qualities.size() > (unsigned)k) {
                   if (al.MapQuality != 0 && al.Qualities.at(k) > '%' && j + pos_rel >= 0 && j + pos_rel < (int)(block_end - block_start)) {
                     // Only increment the depth and number of matches; do not consider variants in soft-clipped region
                     piles_seg.depth[j + pos_rel]++;
@@ -144,13 +142,11 @@ namespace cage {
                       //  cout << "Mismatch at " << j + pos_rel + block_start << seq[j] << memblock[j + pos_rel] << endl;
                     }
                   }
-		}
                 j++; k++;
               }
               break;
 
             case ('I'):
-	      if (al.Qualities.size() > (unsigned)k) {
                 if (al.MapQuality != 0 && j + pos_rel - 1 >= 0 && j + pos_rel - 1 < (int)(block_end - block_start)) {
                   piles_seg.indels[j + pos_rel - 1]++;
                   string alt_bases;
@@ -163,19 +159,16 @@ namespace cage {
                     vc->increment_mismatch(j + pos_rel - 1, alt_bases, al.IsReverseStrand);
                   }
                 }
-	      }
               k += op.Length;
               break;
 
             case ('D'):
-	      if (al.Qualities.size() > (unsigned)k) {
                 if (al.MapQuality != 0 && j + pos_rel - 1 >= 0 && j + pos_rel < (int)(block_end - block_start)) {
                   piles_seg.indels[j + pos_rel]++;
                   if (params.call_variants) {
                     vc->increment_mismatch(j + pos_rel - 1, string(op.Length, '-'), al.IsReverseStrand);
                   }
                 }
-	      }
               for (int l = 0; l < op.Length; l++) {
                 piles_seg.depth[j + pos_rel]++;
                 j++;
